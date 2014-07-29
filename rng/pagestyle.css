@@ -1,0 +1,205 @@
+*
+{
+margin:0 auto;
+padding:0;
+list-style:none;
+/* Only during design. Make value to 0 later */
+/* outline:0px solid black; */
+border:none;
+text-align:center;
+font-family:'Oswald', sans-serif;
+}
+
+.whole-page
+{
+width:100%;
+}
+
+.header-footer
+{
+height:50px;
+line-height:50px;
+width:100%;
+background:linear-gradient(#dddddd,#ffffff);
+overflow:hidden;
+}
+
+.header-footer nav ul li
+{
+display:inline-block;
+width:150px;
+}
+
+#logo-tags
+{
+z-index:10;
+}
+
+#home-pic-container
+{
+width:100%;
+height:300px;
+background:linear-gradient(#1b6303,#0a2c02);
+position:relative;
+overflow:hidden;
+}
+
+#home-pic-container::after
+{
+display:block;
+content:" ";
+background-image:url("images/alpana.png");
+background-size:140px 140px;
+opacity:0.5;
+width:100%;
+height:300px;
+position:relative;
+overflow:hidden;
+z-index:1;
+}
+
+#home-pic img
+{
+position:absolute;
+top:25px;
+left:50%;
+margin-left:-100px;
+mask:url(#circle-clip);
+overflow:hidden;
+z-index:2;
+border:2px solid #0e3701;
+border-radius:100px
+}
+
+svg
+{
+display:block;
+visibility:hidden;
+}
+
+#aami-text
+{
+position:absolute;
+bottom:20px;
+width:100%;
+color:#960000;
+z-index:2;
+text-shadow:
+        -2px -2px 0 #000,  
+        2px -2px 0 #000,
+        -2px 2px 0 #000,
+        2px 2px 0 #000;
+}
+
+a
+{
+color:black;
+text-decoration:none;
+}
+
+a:hover
+{
+text-decoration:underline;
+}
+
+#fixed-nav-header
+{
+z-index:5;
+}
+
+.slide
+{
+position:relative;
+height:300px;
+overflow:hidden;
+}
+
+.slide h2
+{
+color:cyan;
+position:absolute;
+top:20px;
+left:20px;
+z-index:2;
+}
+
+.slide-content
+{
+padding:10px 40px 10px 40px;
+background-color:rgba(0,0,0,0.5);
+color:white;
+position:absolute;
+bottom:50px;
+right:20px;
+width:800px;
+z-index:3;
+}
+
+.slide-content *
+{
+text-align:right;
+}
+
+.slide-content q
+{
+color:yellow;
+text-align:center;
+}
+
+.background_swan
+{
+background-image:url("images/alpana_swan.png");
+display:block;
+content:" ";
+background-size:150px 150px;
+opacity:0.7;
+width:100%;
+height:300px;
+position:absolute;
+top:0;
+left:0;
+overflow:hidden;
+z-index:1;
+}
+
+.background_beng
+{
+background-image:url("images/beng.png");
+display:block;
+content:" ";
+background-size:150px 150px;
+opacity:0.5;
+width:100%;
+height:300px;
+position:absolute;
+top:0;
+left:0;
+overflow:hidden;
+z-index:1;
+}
+
+.background_alpa
+{
+background-image:url("images/alpana.png");
+display:block;
+content:" ";
+background-size:140px 140px;
+opacity:0.5;
+width:100%;
+height:300px;
+position:absolute;
+top:0;
+left:0;
+overflow:hidden;
+z-index:1;
+}
+
+#scroll-indicator
+{
+visibility:hidden;
+position:fixed;
+top:0px;
+right:0px;
+z-index:100;
+}
+
