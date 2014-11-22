@@ -75,6 +75,7 @@ function moveBg(index)
         var pos = 0;
         var $bgImage;
         var $slideContent;
+        var $slideImage;
 
         if ((elemPos + slideHeight) > topVal && elemPos < (topVal + windowHeight)) {
                 $bgImage = $(this).children("#bgimage");
@@ -85,6 +86,10 @@ function moveBg(index)
                         pos = -diff/8;
                 }
                 $bgImage.css("background-position", pos.toString() + "px 0px");
+
+                $slideImage = $(this).children(".slide-image");
+                pos = -diff*50/windowHeight;
+                $slideImage.css("top", pos.toString() + "px");
         }
 
         diff = elemPos + slideHeight - topVal;

@@ -22,7 +22,14 @@ Aami | An unique blend of sensuality, modernity and tradition
 
 <div id="home-pic-container">
 <div id="home-pic">
-<img src="images/circle.png" />
+<svg height="0">
+<defs>
+<clipPath id="circle-clip">
+<circle cx="100" cy="100" r="100" />
+</clipPath> 
+</defs>
+</svg>
+<img src="images/aami_model.jpg" style="clip-path: url(#circle-clip)" />
 </div>
 <h1 id="aami-text">Aami</h1>
 </div>
@@ -39,12 +46,21 @@ Aami | An unique blend of sensuality, modernity and tradition
 </nav>
 </div>
 
+<svg height="0" id=slide-svg>
+<defs>
+<clipPath id="slide-clip-path">
+<polygon points="0,350 100,0 400,0 300,350" />
+</clipPath> 
+</defs>
+</svg>
+
 <div class="slide" id="about-us">
 <h2>About Us</h2>
 <div class="slide-content">
 <p>Idea that began as a thought between two friends, is in the process of transformation to be a nationwide recognized brand. <b>Aami</b>, not only is wonderfully stylish, luxurious and elegant, but also conveys an unique blend of sensuality, modernity and traditional Bengali style.</p>
 <p><b>Parichiti</b> offered top quality fabrics, sophisticated imaginative design and extremely comfortable wear; a coordinate system with individual components that were perfectly color-coordinated to allow mixing and matching several seasons of West Bengal</p>
 </div>
+<img class="slide-image" src="images/IMG_1717.jpg" style="clip-path: url(#slide-clip-path)" />
 </div>
 
 <div class="slide" id="creative-designer">
@@ -54,6 +70,7 @@ Aami | An unique blend of sensuality, modernity and tradition
 <p>Encompassing all that is <em>beauty</em>. I re-manifest myself everyday and so does the art in me. Rising inspiration from the shadows of simplest things of Bengal is me. So, it's <b>Kolkata</b> - my inspiration, my Beloved.</p>
 <p><h5>Sourav Roy Choudhury</h5></p>
 </div>
+<img class="slide-image" src="images/IMG_1717.jpg" style="clip-path: url(#slide-clip-path)" />
 </div>
 
 <!--Collection content goes here. Plan to pick them up from external files.-->
@@ -62,6 +79,7 @@ Aami | An unique blend of sensuality, modernity and tradition
 <div class="slide-content">
 <p>Collection content goes here. Plan to pick them up from external files.</p>
 </div>
+<img class="slide-image" src="images/IMG_1717.jpg" style="clip-path: url(#slide-clip-path)" />
 </div>
 
 <div class="slide" id="contact-us">
@@ -75,6 +93,7 @@ Aami | An unique blend of sensuality, modernity and tradition
 <p><a href="www.rngfashions.com">Homepage</a></p>
 <p><a href="mailto:infoparichiti@rngfashions.com">Email</a></p>
 </div>
+<img class="slide-image" src="images/IMG_1717.jpg" style="clip-path: url(#slide-clip-path)" />
 </div>
 
 <div class="header-footer" id="page-footer">
