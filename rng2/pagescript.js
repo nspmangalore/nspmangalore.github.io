@@ -1,4 +1,5 @@
-headerHeight = 0;
+var headerHeight = 0;
+var headerTop = 0;
 
 function resizeElements()
 {
@@ -11,6 +12,7 @@ function resizeElements()
         /* The picture on the top of the page */
         var $fixedHeader = $("#fixed-nav-header");
         headerHeight = $fixedHeader.height();
+        headerTop = $fixedHeader.offset().top;
 
         $("#slideshow-container").height(windowHeight - headerHeight - footerHeight);
 }
@@ -148,10 +150,10 @@ function scrollCheck()
 {
         /* Update the position of fixed elements*/
         topVal = $(document).scrollTop();
-        if(nhVisible === false && topVal > headerHeight) {
+        if(nhVisible === false && topVal > (headerHeight + headerTop)) {
                 $navHeaderClone.css("visibility", "visible");
                 nhVisible = true;
-        } else if (nhVisible === true && topVal <= headerHeight) {
+        } else if (nhVisible === true && topVal <= (headerHeight + headerTop)) {
                 $navHeaderClone.css("visibility", "hidden");
                 nhVisible = false;
         }
