@@ -3,13 +3,16 @@ headerHeight = 0;
 function resizeElements()
 {
         /* The whole page setup */
-        windowWidth = $(window).innerWidth();
+        var windowHeight = $(window).innerHeight();
+        var windowWidth = $(window).innerWidth();
         var finalWidth = Math.max(windowWidth, 800);
         $(".whole-page").css("width", finalWidth + "px");
 
         /* The picture on the top of the page */
-        var fixedHeader = document.getElementById("fixed-nav-header");
-        headerHeight = fixedHeader.offsetTop;
+        var $fixedHeader = $("#fixed-nav-header");
+        headerHeight = $fixedHeader.height();
+
+        $("#slideshow-container").height(windowHeight - headerHeight - footerHeight);
 }
 
 function slideUp()
@@ -28,18 +31,34 @@ function colorSlide()
         oldColor = newColor;
 }
 
-var imagePos = [[10,10],[210,60]];
+var imagePos = [[300,0],[300,0]];
 var imageInFocus = 0;
-function preloadImage(index)
+var slideShowNotBuilt = 1;
+var lastImage = [-200,100];
+
+function positionBoxes(index)
 {
-        var thumb_url = "images/thumbnails/" + index.toString() +".jpg";
-        $(this).src = thumb_url;
+        var id = index % imagePos.length;
+        newPosX = lastImage[0] + imagePos[id][0];
+        newPosY = lastImage[1] + imagePos[id][1];
+        $(this).css("left", newPosX);
+        $(this).css("bottom", newPosY);
+        lastImage[0] = newPosX;
+        lastImage[1] = newPosY;
+        $(this).css("visibility", "visible");
 }
 
-function startSlideShow()
+function preloadImage(index)
 {
-        $(this).children("img").each(preloadImage);
-        $(this).children("img").parent().append("<div class=\"small-box\"></div>");
+        var thumb_url = "images/thumbnails/" + (index+1).toString() +".jpg";
+        $(this).css("background-image", "url("+thumb_url+")");
+}
+
+function buildSlideShow()
+{
+        var smallBoxes = $(this).find(".small-box");
+        smallBoxes.each(preloadImage);
+        //smallBoxes.each(positionBoxes);
 }
 
 function moveBg()
@@ -54,6 +73,7 @@ function moveBg()
         var scHeight, scWidth;
         var $bgImage;
         var $slideContent;
+        var $slideShow;
 
         $bgImage = $(this).children(".bgimage");
         $bgImageAlt = $(this).children(".bgimage-alt");
@@ -78,7 +98,7 @@ function moveBg()
                 $bgImage.css("background-position", "0px " + pos.toString() + "px");
                 $bgImageAlt.css("background-position", "0px " + pos.toString() + "px");
 
-                pos = (windowHeight - scHeight)/2 + Math.floor(diff/4);
+                pos = (slideHeight - scHeight)/2 + Math.floor(diff/4);
                 $slideContent.css("top", pos.toString() + "px");
                 pos = (windowWidth - scWidth)/2;
                 $slideContent.css("left", pos.toString() + "px");
@@ -87,11 +107,17 @@ function moveBg()
                 opa = 1 - (diff/slideHeight);
                 $bgImageAlt.css("opacity", opa);
 
-                if ($(this).children("#slideshow").length) {
-                        if ((elemPos + slideHeight) < (pageHeight - footerHeight)) {
-                        } else {
-                                $(this).children("#slideshow").each(startSlideShow);
+                if ($(this).children("#slideshow-container").length) {
+                        $slideShow = $(this).children("#slideshow-container");
+                        if (slideShowNotBuilt) {
+                                $slideShow.each(buildSlideShow);
+                                slideShowNotBuilt = 0;
+                                lastImage = [0,0];
                         }
+
+                        diff = (elemPos + slideHeight + footerHeight) - (topVal + windowHeight);
+                        pos = -(diff * windowWidth) / (topVal + windowHeight);
+                        $slideShow.css("bottom", pos.toString() + "px")
                 }
         }
 
@@ -99,6 +125,9 @@ function moveBg()
         if (diff < slideHeight) {
                 pos = 0.5 * (1 + diff/slideHeight);
                 $slideContent.css("opacity", pos.toString());
+                bottomReached = 1;
+        } else {
+                bottomReached = 0;
         }
 
         diff = (topVal + windowHeight) - (elemPos);
@@ -130,25 +159,59 @@ function scrollCheck()
         $(".slide").each(moveBg);
 }
 
-function mainFunc()
-{
-        resizeElements();
+var slideShowPos = 0;
 
+function smallBoxOver()
+{
+        $(this).animate({"top": "-=10"}, 500);
+}
+
+function smallBoxOut()
+{
+        $(this).animate({"top": "+=10"}, 500);
+}
+
+function moveLeft()
+{
+        var $gallery = $(this).parent().find("#slideshow");
+        $gallery.animate({scrollLeft: "-=100"}, 500);
+}
+
+function moveRight()
+{
+        var $gallery = $(this).parent().find("#slideshow");
+        $gallery.animate({scrollLeft: "+=100"}, 500);
+}
+
+function displayFullImage()
+{
+}
+
+function spawnHeader()
+{
         $navHeaderClone = $("#fixed-nav-header").clone(true);
         $navHeaderClone.appendTo("body");
         $navHeaderClone.css("position", "fixed");
         $navHeaderClone.css("top", "0px");
         $navHeaderClone.css("z-index", "10");
         $navHeaderClone.css("visibility", "hidden");
+}
+
+function mainFunc()
+{
+        spawnHeader();
         nhHeight = $navHeaderClone.height();
         footerHeight = $("#page-footer").height();
-
-        /* Events */
+        resizeElements();
         $(window).resize(resizeElements);
-        $(".nav-btn").click(slideUp);
         $(".slide").each(colorSlide);
         scrollCheck();
         $(document).scroll(scrollCheck);
+        $(".small-box").hover(smallBoxOver, smallBoxOut);
+        $(".small-box").click(displayFullImage);
+        $(".nav-btn").click(slideUp);
+        $(".left-arrow").mousedown(moveLeft);
+        $(".right-arrow").mousedown(moveRight);
 }
 
 $(document).ready(mainFunc);
