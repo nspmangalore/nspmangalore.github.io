@@ -34,7 +34,6 @@ function colorSlide()
 }
 
 var imagePos = [[300,0],[300,0]];
-var imageInFocus = 0;
 var slideShowNotBuilt = 1;
 var lastImage = [-200,100];
 
@@ -60,7 +59,6 @@ function buildSlideShow()
 {
         var smallBoxes = $(this).find(".small-box");
         smallBoxes.each(preloadImage);
-        //smallBoxes.each(positionBoxes);
 }
 
 function moveBg()
@@ -139,21 +137,21 @@ function moveBg()
         }
 }
 
-nhVisible = false;
-nhHeight = 0;
-slidesLoaded = 0;
-loadingSlide = false;
-topVal = 0;
-footerHeight = 0;
+var nhVisible = false;
+var nhHeight = 0;
+var slidesLoaded = 0;
+var loadingSlide = false;
+var topVal = 0;
+var footerHeight = 0;
 
 function scrollCheck()
 {
         /* Update the position of fixed elements*/
         topVal = $(document).scrollTop();
-        if(nhVisible === false && topVal > (headerHeight + headerTop)) {
+        if(nhVisible === false && topVal > headerTop) {
                 $navHeaderClone.css("visibility", "visible");
                 nhVisible = true;
-        } else if (nhVisible === true && topVal <= (headerHeight + headerTop)) {
+        } else if (nhVisible === true && topVal <= headerTop) {
                 $navHeaderClone.css("visibility", "hidden");
                 nhVisible = false;
         }
@@ -177,16 +175,61 @@ function moveLeft()
 {
         var $gallery = $(this).parent().find("#slideshow");
         $gallery.animate({scrollLeft: "-=100"}, 500);
+        if ($gallery.scrollLeft() <= 0) {
+                $gallery.scrollRight = 0;
+        }
 }
 
 function moveRight()
 {
         var $gallery = $(this).parent().find("#slideshow");
         $gallery.animate({scrollLeft: "+=100"}, 500);
+        if ($gallery.scrollRight() <= 0) {
+                $gallery.scrollLeft = 0;
+        }
+}
+
+var $images = {};
+var imageInFocus = -1;
+
+function hideFullImage(e)
+{
+        var $image;
+        if (imageInFocus == -1) {
+                return;
+        }
+
+        $image = $images[imageInFocus];
+        if (!$image.is(e.target) && 
+                $image.has(e.target).length === 0) {
+                $image.css("visibility", "hidden");
+                imageInFocus = -1;
+        }
 }
 
 function displayFullImage()
 {
+        var $image;
+        var index = $(".small-box").index($(this));
+        var fullUrl = "images/fullsize/" + (index+1).toString() +".jpg";
+        var windowHeight = $(window).innerHeight();
+        imageInFocus = index;
+        if ($images[index]) {
+                $image = $images[index];
+                $image.css("visibility", "hidden");
+        } else {
+                $image = $("<div class='full-image'><image src=" + fullUrl + " /></div>");
+                $images[index] = $image;
+                $image.appendTo("body");
+                $image.css("position", "fixed");
+                $image.css("z-index", "15");
+                $image.css("top", "100px");
+                $image.css("left", "100px");
+                $image.css("bottom", "100px");
+                $image.css("right", "100px");
+                $image.css("visibility", "hidden");
+        }
+        $image.css("visibility", "visible");
 }
 
 function spawnHeader()
@@ -209,6 +252,7 @@ function mainFunc()
         $(".slide").each(colorSlide);
         scrollCheck();
         $(document).scroll(scrollCheck);
+        $(document).mouseup(hideFullImage);
         $(".small-box").hover(smallBoxOver, smallBoxOut);
         $(".small-box").click(displayFullImage);
         $(".nav-btn").click(slideUp);
